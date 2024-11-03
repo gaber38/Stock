@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 @RequestMapping(value = "stocks/")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class StockController
 {
 

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@CrossOrigin
 @RequestMapping(value = "stockexchange/")
 @RestController
 public class StockExchangeController
@@ -75,7 +76,8 @@ public class StockExchangeController
     }
 
     @PostMapping(value = "add_stock/{id}")
-    public ResponseEntity<SuccessItemResponse<StockExchange>> add_stock(@PathVariable long id, @RequestBody AppendStockRequest request)
+    public ResponseEntity<SuccessItemResponse<StockExchange>> add_stock(@PathVariable long id,
+                                                                        @RequestBody AppendStockRequest request)
     {
         logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.add_stock(id, request.getStockId());
@@ -85,7 +87,8 @@ public class StockExchangeController
     }
 
     @PostMapping(value = "remove_stock/{id}")
-    public ResponseEntity<SuccessItemResponse<StockExchange>> remove_stock(@PathVariable long id, @RequestBody AppendStockRequest request)
+    public ResponseEntity<SuccessItemResponse<StockExchange>> remove_stock(@PathVariable long id,
+                                                                           @RequestBody AppendStockRequest request)
     {
         logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.remove_stock(id, request.getStockId());

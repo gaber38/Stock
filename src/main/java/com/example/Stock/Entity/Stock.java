@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "stocks")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Stock {
 
     @Id
@@ -25,6 +28,8 @@ public class Stock {
 
     private double currentPrice;
 
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime lastUpdate;
 
     public Stock(String name, String description, double currentPrice)

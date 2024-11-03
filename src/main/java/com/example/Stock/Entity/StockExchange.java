@@ -3,6 +3,8 @@ package com.example.Stock.Entity;
 import com.example.Stock.Exceptions.EntityAlreadyExistsException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.*;
 
 import java.util.HashSet;
@@ -14,8 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingBase.class)
-public class StockExchange extends AuditingBase
+public class StockExchange
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
