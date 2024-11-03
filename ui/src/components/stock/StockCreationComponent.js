@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createStock } from '../../services/api'; // Ensure this function exists
+import { createStock } from '../../services/stockApi'; 
 import { Container, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,6 @@ const StockCreate = () => {
     const [stock, setStock] = useState({
         name: '',
         description: '',
-        currentPrice: 0,
     });
     const [error, setError] = useState(null);
 
@@ -16,15 +15,15 @@ const StockCreate = () => {
         const { name, value } = e.target;
         setStock({
             ...stock,
-            [name]: name === 'currentPrice' ? parseFloat(value) : value, // Parse current price as a float
+            [name]: value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await createStock(stock); // Ensure this function is implemented
-            navigate('/stocks'); // Adjust the navigation path
+            await createStock(stock);
+            navigate('/stocks/1');
         } catch (error) {
             setError(error.message);
         }
@@ -63,7 +62,8 @@ const StockCreate = () => {
                     <Form.Label>Current Price</Form.Label>
                     <Form.Control
                         type="number"
-                        placeholder="Enter current price"
+                        step="0.01" 
+                        placeholder="Enter current stock price"
                         name="currentPrice"
                         value={stock.currentPrice}
                         onChange={handleChange}
@@ -72,6 +72,9 @@ const StockCreate = () => {
                 </Form.Group>
 
                 <Button variant="primary" type="submit">Create</Button>
+                <Button variant="secondary" onClick={() => navigate(-1)} className="ms-2">
+                    Cancel
+                </Button>
             </Form>
         </Container>
     );

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
-import { register as registerApi } from '../../services/api';
+import { register as registerApi } from '../../services/authApi';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../Forms/RegisterForm'; 
-import { Container, Alert } from 'react-bootstrap'; 
+import { Container } from 'react-bootstrap'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,12 +14,18 @@ const Register = () => {
     role: 'USER',
   });
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useAuth();
+  const { authData, login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (authData.accessToken) {
+      navigate('/products'); // Redirect to products if already logged in
+    }
+  }, [authData, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

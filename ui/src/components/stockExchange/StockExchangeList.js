@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { fetchStockExchanges, deleteStockExchange } from '../../services/api';
-import { Table, Pagination, Button, Alert, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { fetchStockExchanges, deleteStockExchange } from '../../services/stockExchangeApi'; 
+import { Table, Pagination, Button, Alert, Container, Dropdown } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const StockExchangeList = () => {
+    const navigate = useNavigate();
+    const { pageNumber } = useParams(); // Get the page number from the URL
     const [stockExchanges, setStockExchanges] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
     const [stocksPerPage] = useState(10);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [sortField, setSortField] = useState('id'); // Default sort field
+    const [sortOrder, setSortOrder] = useState('asc'); // Default sort order
+
+    // Default page number to 1 if pageNumber is null or invalid
+    const currentPage = parseInt(pageNumber) > 0 ? parseInt(pageNumber) : 1;
 
     useEffect(() => {
         const getStockExchanges = async () => {
             try {
-                const data = await fetchStockExchanges();
+                const data = await fetchStockExchanges(currentPage, sortField, sortOrder);
                 setStockExchanges(data.data); // Adjust based on your response structure
             } catch (error) {
                 setError(error.message);
@@ -22,32 +27,31 @@ const StockExchangeList = () => {
         };
 
         getStockExchanges();
-    }, []);
+    }, [currentPage, sortField, sortOrder]); // Add sortField and sortOrder to dependencies
 
     const handleDelete = async (id) => {
-        try {
-            await deleteStockExchange(id);
-            setStockExchanges(stockExchanges.filter(exchange => exchange.id !== id));
-        } catch (error) {
-            setError(error.message);
+        if (window.confirm("Are you sure you want to delete this stock exchange?")) {
+            try {
+                await deleteStockExchange(id);
+                setStockExchanges(stockExchanges.filter(exchange => exchange.id !== id));
+                setMessage('Stock exchange deleted successfully');
+            } catch (error) {
+                setError(error.message);
+            }
         }
     };
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <Alert variant="danger">Error: {error}</Alert>;
 
-    // Calculate current stocks
-    const indexOfLastExchange = currentPage * stocksPerPage;
-    const indexOfFirstExchange = indexOfLastExchange - stocksPerPage;
-    const currentExchanges = stockExchanges.slice(indexOfFirstExchange, indexOfLastExchange);
+    // Calculate total pages based on your API response
+    const totalPages = Math.ceil(stockExchanges.length / stocksPerPage);
 
-    // Pagination logic
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(stockExchanges.length / stocksPerPage); i++) {
-        pageNumbers.push(i);
-    }
+    const handlePageChange = (newPage) => {
+        navigate(`/stock-exchanges/${newPage}`);
+    };
 
     return (
-        <Container className="mt-5"> {/* Add margin from top */}
+        <Container className="mt-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h2>Stock Exchanges</h2>
                 <Button
@@ -60,7 +64,24 @@ const StockExchangeList = () => {
             {message && <Alert variant="success" className="mt-3">{message}</Alert>}
             {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
 
-            <Table striped bordered hover className="mb-3"> {/* Add margin at the bottom */}
+            <div className="mb-3">
+                <Dropdown>
+                    <Dropdown.Toggle variant="info" id="dropdown-basic">
+                        Sort by: {sortField} ({sortOrder})
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => { setSortField('id'); setSortOrder('asc'); }}>ID Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('id'); setSortOrder('desc'); }}>ID Descending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('name'); setSortOrder('asc'); }}>Name Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('name'); setSortOrder('desc'); }}>Name Descending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('liveInMarket'); setSortOrder('asc'); }}>Live in Market Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('liveInMarket'); setSortOrder('desc'); }}>Live in Market Descending</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+
+            <Table striped bordered hover className="mb-3">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -72,7 +93,7 @@ const StockExchangeList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentExchanges.map(exchange => (
+                    {stockExchanges.map(exchange => (
                         <tr key={exchange.id}>
                             <td>{exchange.id}</td>
                             <td>{exchange.name}</td>
@@ -83,29 +104,25 @@ const StockExchangeList = () => {
                                 <Button
                                     variant="primary"
                                     onClick={() => navigate(`/update-stock-exchange/${exchange.id}`)}
-                                    className="ms-2"
-                                >
+                                    className="ms-2">
                                     Update
                                 </Button>
                                 <Button
                                     variant="danger"
                                     onClick={() => handleDelete(exchange.id)}
-                                    className="ms-2"
-                                >
+                                    className="ms-2">
                                     Delete
                                 </Button>
                                 <Button
                                     variant="success"
                                     onClick={() => navigate(`/add-stock/${exchange.id}`)}
-                                    className="ms-2"
-                                >
+                                    className="ms-2">
                                     Add Stock
                                 </Button>
                                 <Button
                                     variant="danger"
                                     onClick={() => navigate(`/remove-stock/${exchange.id}`)}
-                                    className="ms-2"
-                                >
+                                    className="ms-2">
                                     Remove Stock
                                 </Button>
                             </td>
@@ -115,13 +132,13 @@ const StockExchangeList = () => {
             </Table>
 
             <Pagination>
-                {pageNumbers.map(number => (
+                {Array.from({ length: totalPages }, (_, index) => (
                     <Pagination.Item
-                        key={number}
-                        active={number === currentPage}
-                        onClick={() => setCurrentPage(number)}
+                        key={index + 1}
+                        active={index + 1 === currentPage}
+                        onClick={() => handlePageChange(index + 1)}
                     >
-                        {number}
+                        {index + 1}
                     </Pagination.Item>
                 ))}
             </Pagination>

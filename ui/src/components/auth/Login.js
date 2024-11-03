@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
-import { login as loginApi } from '../../services/api';
+import { login as loginApi } from '../../services/authApi';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../Forms/LoginForm'; 
-import { Container, Row, Col } from 'react-bootstrap'; 
+import LoginForm from '../Forms/LoginForm';
+import { Container } from 'react-bootstrap';
 
 const Login = () => {
+  const { authData, login } = useAuth();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useAuth();
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authData.accessToken) {
+      navigate('/products'); // Redirect to products if already logged in
+    }
+  }, [authData, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +29,15 @@ const Login = () => {
       const accessToken = response.data.access_token;
       const refreshToken = response.data.refresh_token;
 
-      // Store tokens in localStorage
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
-      // Call the login function to update context or state
       login(accessToken, refreshToken);
-
-      // Redirect to the desired page
-      navigate('/stock-exchanges');
+      navigate('/products');
     } catch (error) {
-      console.error('Login error:', error.response.data); // Log the full error for debugging
+      console.error('Login error:', error.response.data);
       if (error.response) {
-        const { message, code, errors } = error.response.data;
-        // Handle the error response appropriately
+        const { message, errors } = error.response.data;
         setErrorMessage(errors?.detailed_message || message || 'Login failed. Please try again.');
       } else {
         setErrorMessage('An unexpected error occurred. Please try again.');
@@ -45,7 +46,7 @@ const Login = () => {
   };
 
   return (
-    <Container className="mt-5 ms-5"> {/* Add top and left margin */}
+    <Container className="mt-5 ms-5">
       <h2 className="text-center">Login</h2>
       <LoginForm 
         credentials={credentials} 

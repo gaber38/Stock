@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { removeStock } from '../../services/api'; 
+import { removeStock } from '../../services/stockExchangeApi'; 
 import { Alert, Button, Form } from 'react-bootstrap';
 
 const RemoveStock = () => {
@@ -15,7 +15,7 @@ const RemoveStock = () => {
         try {
             const response = await removeStock(id, stockId); 
             setMessage(response.data.message);
-            navigate('/stock-exchanges');
+            navigate('/stock-exchanges/1');
         } catch (error) {
             setError(error.response?.data.message || 'An error occurred while removing stock.');
         }
@@ -40,7 +40,7 @@ const RemoveStock = () => {
                 <Button variant="danger" type="submit">
                     Remove Stock
                 </Button>
-                <Button variant="secondary" onClick={() => navigate('/')} className="ms-2">
+                <Button variant="secondary" onClick={() => navigate(-1)} className="ms-2">
                     Cancel
                 </Button>
             </Form>

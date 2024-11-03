@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createStockExchange } from '../../services/api';
+import { createStockExchange } from '../../services/stockExchangeApi'; 
 import { Container, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ const StockExchangeCreate = () => {
         e.preventDefault();
         try {
             await createStockExchange(stockExchange);
-            navigate('/stock-exchanges');
+            navigate('/stock-exchanges/1');
         } catch (error) {
             setError(error.message);
         }
@@ -59,6 +59,9 @@ const StockExchangeCreate = () => {
                 </Form.Group>
 
                 <Button variant="primary" type="submit">Create</Button>
+                <Button variant="secondary" onClick={() => navigate(-1)} className="ms-2">
+                    Cancel
+                </Button>
             </Form>
         </Container>
     );

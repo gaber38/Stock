@@ -2,28 +2,28 @@ import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Products = () => {
     const navigate = useNavigate();
 
     return (
         <Container className="text-center mt-5">
-            <h1>Welcome to Our Application</h1>
+            <h1>Welcome Back to the Stock Management App</h1>
             <p>Please select an option to proceed:</p>
             <Button 
                 variant="primary" 
-                onClick={() => navigate('/register')} 
+                onClick={() => navigate('/stock-exchanges/1')}  
                 className="me-3"
             >
-                Register
+                Stock Exchange List
             </Button>
             <Button 
                 variant="secondary" 
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/stocks/1')}  
             >
-                Login
+                Stock List
             </Button>
         </Container>
     );
 };
 
-export default Home;
+export default Products;

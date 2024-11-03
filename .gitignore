@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore node_modules
+ui/node_modules/
+
+# Ignore logs
+logs/

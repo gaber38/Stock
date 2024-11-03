@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addStock } from '../../services/api'; 
+import { addStock } from '../../services/stockExchangeApi'; 
 import { Alert, Button, Form } from 'react-bootstrap';
 
 const AddStock = () => {
@@ -15,7 +15,7 @@ const AddStock = () => {
         try {
             const response = await addStock(id, stockId); 
             setMessage(response.message); 
-            navigate('/stock-exchanges');
+            navigate('/stock-exchanges/1');
         } catch (error) {
             setError(error.response?.data.message || 'An error occurred while adding stock.');
         }
@@ -40,7 +40,7 @@ const AddStock = () => {
                 <Button variant="primary" type="submit">
                     Add Stock
                 </Button>
-                <Button variant="secondary" onClick={() => navigate('/')} className="ms-2">
+                <Button variant="secondary" onClick={() => navigate(-1)} className="ms-2">
                     Cancel
                 </Button>
             </Form>

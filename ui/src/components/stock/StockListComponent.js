@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { fetchStocks, deleteStock } from '../../services/api'; // Ensure these functions exist
-import { Table, Pagination, Button, Alert, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { fetchStocks, deleteStock } from '../../services/stockApi'; 
+import { Table, Pagination, Button, Alert, Container, Dropdown } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const StockList = () => {
+    const navigate = useNavigate();
+    const { pageNumber } = useParams();
     const [stocks, setStocks] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
     const [stocksPerPage] = useState(10);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [sortField, setSortField] = useState('id');
+    const [sortOrder, setSortOrder] = useState('asc');
+
+    const currentPage = parseInt(pageNumber) > 0 ? parseInt(pageNumber) : 1;
 
     useEffect(() => {
         const getStocks = async () => {
             try {
-                const data = await fetchStocks(); // Fetch the list of stocks
-                setStocks(data.data); // Adjust based on your response structure
+                const data = await fetchStocks(currentPage, sortField, sortOrder);
+                setStocks(data.data);
             } catch (error) {
                 setError(error.message);
             }
         };
 
         getStocks();
-    }, []);
+    }, [currentPage, sortField, sortOrder]);
 
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this stock?")) {
             try {
-                await deleteStock(id); // Ensure this function exists
-                setStocks(stocks.filter(stock => stock.id !== id)); // Update local state
+                await deleteStock(id);
+                setStocks(stocks.filter(stock => stock.id !== id));
                 setMessage('Stock deleted successfully');
             } catch (error) {
                 setError(error.message);
@@ -38,16 +42,11 @@ const StockList = () => {
 
     if (error) return <Alert variant="danger">Error: {error}</Alert>;
 
-    // Calculate current stocks
-    const indexOfLastStock = currentPage * stocksPerPage;
-    const indexOfFirstStock = indexOfLastStock - stocksPerPage;
-    const currentStocks = stocks.slice(indexOfFirstStock, indexOfLastStock);
+    const totalPages = Math.ceil(stocks.length / stocksPerPage);
 
-    // Pagination logic
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(stocks.length / stocksPerPage); i++) {
-        pageNumbers.push(i);
-    }
+    const handlePageChange = (newPage) => {
+        navigate(`/stocks/${newPage}`);
+    };
 
     return (
         <Container className="mt-5">
@@ -60,8 +59,26 @@ const StockList = () => {
                     Create Stock
                 </Button>
             </div>
+            
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
+
+            <div className="mb-3">
+                <Dropdown>
+                    <Dropdown.Toggle variant="info" id="dropdown-basic">
+                        Sort by: {sortField} ({sortOrder})
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => { setSortField('id'); setSortOrder('asc'); }}>ID Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('id'); setSortOrder('desc'); }}>ID Descending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('name'); setSortOrder('asc'); }}>Name Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('name'); setSortOrder('desc'); }}>Name Descending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('currentPrice'); setSortOrder('asc'); }}>Price Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { setSortField('currentPrice'); setSortOrder('desc'); }}>Price Descending</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
 
             <Table striped bordered hover className="mb-3">
                 <thead>
@@ -74,7 +91,7 @@ const StockList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentStocks.map(stock => (
+                    {stocks.map(stock => (
                         <tr key={stock.id}>
                             <td>{stock.id}</td>
                             <td>{stock.name}</td>
@@ -102,13 +119,13 @@ const StockList = () => {
             </Table>
 
             <Pagination>
-                {pageNumbers.map(number => (
+                {Array.from({ length: totalPages }, (_, index) => (
                     <Pagination.Item
-                        key={number}
-                        active={number === currentPage}
-                        onClick={() => setCurrentPage(number)}
+                        key={index + 1}
+                        active={index + 1 === currentPage}
+                        onClick={() => handlePageChange(index + 1)}
                     >
-                        {number}
+                        {index + 1}
                     </Pagination.Item>
                 ))}
             </Pagination>

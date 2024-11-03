@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Updated import
-import { updateStockExchange, fetchStockExchanges } from '../../services/api';
+import { useParams, useNavigate } from 'react-router-dom';
+import { updateStockExchange, fetchStockExchangeById } from '../../services/stockExchangeApi'; 
 import { Container, Form, Button } from 'react-bootstrap';
 
 const StockExchangeUpdate = () => {
     const { id } = useParams();
-    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const navigate = useNavigate(); 
     const [stockExchange, setStockExchange] = useState({
         name: '',
         description: '',
@@ -15,11 +15,8 @@ const StockExchangeUpdate = () => {
     useEffect(() => {
         const getStockExchange = async () => {
             try {
-                const data = await fetchStockExchanges();
-                const exchange = data.data.find((ex) => ex.id === parseInt(id));
-                if (exchange) {
-                    setStockExchange(exchange);
-                }
+                const data = await fetchStockExchangeById(id);
+                setStockExchange(data); 
             } catch (error) {
                 setError(error.message);
             }
@@ -29,10 +26,10 @@ const StockExchangeUpdate = () => {
     }, [id]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setStockExchange({
             ...stockExchange,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: value,
         });
     };
 
@@ -40,7 +37,7 @@ const StockExchangeUpdate = () => {
         e.preventDefault();
         try {
             await updateStockExchange(id, stockExchange);
-            navigate('/stock-exchanges');
+            navigate('/stock-exchanges/1'); // Navigate after successful update
         } catch (error) {
             setError(error.message);
         }
@@ -77,6 +74,9 @@ const StockExchangeUpdate = () => {
                 </Form.Group>
                 
                 <Button variant="primary" type="submit">Update</Button>
+                <Button variant="secondary" onClick={() => navigate(-1)} className="ms-2">
+                    Cancel
+                </Button>
             </Form>
         </Container>
     );

@@ -32,8 +32,10 @@ export const AuthProvider = ({ children }) => {
     setAuthData({ accessToken: null, refreshToken: null });
   };
 
+  const isAuthenticated = !!authData.accessToken; // Derive the authentication state
+
   return (
-    <AuthContext.Provider value={{ authData, login, logout }}>
+    <AuthContext.Provider value={{ authData, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

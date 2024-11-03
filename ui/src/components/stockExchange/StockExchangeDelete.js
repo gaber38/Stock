@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { deleteStockExchange } from '../../services/api';
+import { deleteStockExchange } from '../../services/stockExchangeApi'; 
 import { Container, Button } from 'react-bootstrap';
 
 const StockExchangeDelete = () => {
@@ -14,7 +14,7 @@ const StockExchangeDelete = () => {
             await deleteStockExchange(id);
             setConfirmation(true);
             setTimeout(() => {
-                navigate('/stock-exchanges');
+                navigate('/stock-exchanges/1');
             }, 2000);
         } catch (error) {
             setError(error.message || 'Failed to delete stock exchange.');
