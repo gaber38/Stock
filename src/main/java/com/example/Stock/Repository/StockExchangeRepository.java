@@ -4,7 +4,9 @@ import com.example.Stock.Entity.StockExchange;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +15,7 @@ import java.util.List;
 public interface StockExchangeRepository extends JpaRepository<StockExchange, Long> {
 
     Page<StockExchange> findAll(Pageable pageable);
+
+    @Query(value = "DELETE FROM stock_exchange_stocks WHERE stock_exchange_id=?", nativeQuery = true)
+    void deleteRelated(@Param("id") long id);
 }

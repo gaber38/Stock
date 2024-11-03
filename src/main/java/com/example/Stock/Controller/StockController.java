@@ -2,6 +2,7 @@ package com.example.Stock.Controller;
 
 import com.example.Stock.Entity.Stock;
 import com.example.Stock.Entity.StockExchange;
+import com.example.Stock.Service.StockExchangeService;
 import com.example.Stock.Service.StockService;
 import com.example.Stock.dto.Request.StockRequest;
 import com.example.Stock.dto.Response.GeneralResponse;
@@ -35,15 +36,28 @@ public class StockController
     }
 
     @GetMapping(value = "list")
-    public ResponseEntity<SuccessListResponse<Stock>> list(@RequestParam(defaultValue = Constants.DEFAULT_SORTING_FIELD) String field, @RequestParam(defaultValue = Constants.ASCENDING_ORDER) String order, @RequestParam(defaultValue = Constants.DEFAULT_PAGE_NUMBER) int page)
+    public ResponseEntity<SuccessListResponse<Stock>> list(@RequestParam(defaultValue = Constants.DEFAULT_SORTING_FIELD) String sortField,
+                                                           @RequestParam(defaultValue = Constants.ASCENDING_ORDER) String sortOrder,
+                                                           @RequestParam(defaultValue = "1") int page)
     {
         logger.logp(Level.INFO, StockController.class.getName(), "list", "Enter");
-        List<Stock> items = this.stockService.list(field, order, page);
+        List<Stock> items = this.stockService.list(page, sortField, sortOrder);
         SuccessListResponse<Stock> response = new SuccessListResponse<>(Messages.SUCCESS.getCode(), Messages.SUCCESS.getMessage(), items.size(), items);
         logger.logp(Level.INFO, StockController.class.getName(), "list", "response is " + response);
         logger.logp(Level.INFO, StockController.class.getName(), "list", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<SuccessItemResponse<Stock>> retrieve(@PathVariable long id)
+    {
+        logger.logp(Level.INFO, StockController.class.getName(), "retrieve", "Enter");
+        SuccessItemResponse<Stock> response = this.stockService.retrieve(id);
+        logger.logp(Level.INFO, StockController.class.getName(), "retrieve", "response is " + response);
+        logger.logp(Level.INFO, StockController.class.getName(), "retrieve", "Exit");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     @PostMapping(value = "create")
     public ResponseEntity<SuccessItemResponse<Stock>> create(@RequestBody StockRequest request)
@@ -55,7 +69,7 @@ public class StockController
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PatchMapping(value = "update/{id}")
+    @PutMapping(value = "update/{id}")
     public ResponseEntity<SuccessItemResponse<Stock>> update(@PathVariable long id, @RequestBody StockRequest request)
     {
         logger.logp(Level.INFO, StockController.class.getName(), "update", "Enter");

@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @CrossOrigin
-@RequestMapping(value = "stockexchange/")
+@RequestMapping(value = "stockexchanges/")
 @RestController
 public class StockExchangeController
 {
@@ -35,43 +35,55 @@ public class StockExchangeController
     }
 
     @GetMapping(value = "list")
-    public ResponseEntity<SuccessListResponse<StockExchange>> list(@RequestParam(defaultValue = Constants.DEFAULT_SORTING_FIELD) String field, @RequestParam(defaultValue = Constants.ASCENDING_ORDER) String order, @RequestParam(defaultValue = Constants.DEFAULT_PAGE_NUMBER) int page)
+    public ResponseEntity<SuccessListResponse<StockExchange>> list(@RequestParam(defaultValue = Constants.DEFAULT_SORTING_FIELD) String sortField,
+                                                                   @RequestParam(defaultValue = Constants.ASCENDING_ORDER) String sortOrder,
+                                                                   @RequestParam(defaultValue = "1") int page)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
-        List<StockExchange> stockExchanges = this.stockExchangeService.list(field, order, page);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
+        List<StockExchange> stockExchanges = this.stockExchangeService.list(page, sortField, sortOrder);
         SuccessListResponse<StockExchange> response = new SuccessListResponse<>(Messages.SUCCESS.getCode(), Messages.SUCCESS.getMessage(), stockExchanges.size(), stockExchanges);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<SuccessItemResponse<StockExchange>> retrieve(@PathVariable long id)
+    {
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "retrieve", "Enter");
+        SuccessItemResponse<StockExchange> response = this.stockExchangeService.retrieve(id);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "retrieve", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "retrieve", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(value = "create")
     public ResponseEntity<SuccessItemResponse<StockExchange>> create(@RequestBody StockExchangeRequest request)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.create(request);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PatchMapping(value = "update/{id}")
+    @PutMapping(value = "update/{id}")
     public ResponseEntity<SuccessItemResponse<StockExchange>> update(@PathVariable long id, @RequestBody StockExchangeRequest request)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.update(id, request);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "delete/{id}")
     public ResponseEntity<SuccessItemResponse<StockExchange>> delete(@PathVariable long id)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.delete(id);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -79,10 +91,10 @@ public class StockExchangeController
     public ResponseEntity<SuccessItemResponse<StockExchange>> add_stock(@PathVariable long id,
                                                                         @RequestBody AppendStockRequest request)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.add_stock(id, request.getStockId());
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -90,10 +102,10 @@ public class StockExchangeController
     public ResponseEntity<SuccessItemResponse<StockExchange>> remove_stock(@PathVariable long id,
                                                                            @RequestBody AppendStockRequest request)
     {
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Enter");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Enter");
         SuccessItemResponse<StockExchange> response = this.stockExchangeService.remove_stock(id, request.getStockId());
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "response is " + response);
-        logger.logp(Level.INFO, StockController.class.getName(), "create", "Exit");
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "response is " + response);
+        logger.logp(Level.INFO, StockExchangeService.class.getName(), "create", "Exit");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

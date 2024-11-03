@@ -1,9 +1,8 @@
 package com.example.Stock.Entity;
 
 import com.example.Stock.Exceptions.EntityAlreadyExistsException;
+import com.example.Stock.utils.Messages;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.*;
 
@@ -47,17 +46,25 @@ public class StockExchange
     {
         if (stocks.contains(stock))
         {
-            throw new EntityAlreadyExistsException("");
+            throw new EntityAlreadyExistsException(Messages.DUPLICATE_ITEM.getMessage());
         }
         stocks.add(stock);
+        if (stocks.size() >= 10)
+        {
+            this.setLiveInMarket(true);
+        }
     }
 
     public void removeStock(Stock stock)
     {
         if (!stocks.contains(stock))
         {
-            throw new NoSuchElementException("");
+            throw new NoSuchElementException(Messages.ITEM_NOT_FOUND.getMessage());
         }
         stocks.remove(stock);
+        if (stocks.size() < 10)
+        {
+            this.setLiveInMarket(false);
+        }
     }
 }
