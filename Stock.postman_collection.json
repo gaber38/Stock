@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "2555e4cb-604c-47d2-9742-259577c01087",
+		"name": "Stock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19712053"
+	},
+	"item": [
+		{
+			"name": "stock_exchange",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg2Mzc3MCwiZXhwIjoxNzYyOTUwMTcwfQ.bFY09EasW4es5dCVafmRKXBEukmeWaW4CEhv9MuRRHc"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"s19\",\r\n    \"description\" : \"this is egyptian brand\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stockexchanges/create"
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg2Mjk2MSwiZXhwIjoxNzYyOTQ5MzYxfQ.XLBJxKvSyPfx58Jv1idEUOVSaQH3e5XcNGc2o6jdlxc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/stockexchanges/list?sortField=id&sortOrder=asc&page=1&searchField=name&searchValue=s3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"stockexchanges",
+								"list"
+							],
+							"query": [
+								{
+									"key": "sortField",
+									"value": "id"
+								},
+								{
+									"key": "sortOrder",
+									"value": "asc"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "searchField",
+									"value": "name"
+								},
+								{
+									"key": "searchValue",
+									"value": "s3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgwMjQxNiwiZXhwIjoxNzYyODg4ODE2fQ.Fdi0myhr4H8TFMQnKT0m18YP13rGjUfsxd3-cLlBXJI"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/stockexchanges/delete/52"
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg2NzYyNCwiZXhwIjoxNzYyOTU0MDI0fQ.34UAp810koJb3q8WmMFXQDvXi3bOyjuorUW0TyscAzY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/stockexchanges/15555"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg2NDc2NCwiZXhwIjoxNzYyOTUxMTY0fQ.YjgQuFBRPPIUWQoecbMzOdXylZo-8FVDFrH12Cv1buk"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"s195888\",\r\n    \"description\" : \"this is egyptian brand\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stockexchanges/update/152"
+					},
+					"response": []
+				},
+				{
+					"name": "add_stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg3OTgyMiwiZXhwIjoxNzYyOTY2MjIyfQ.8H3GH3CpwXttTUhWROrxvgvXztgduBGfWZDgx8Htcxk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stockId\" : 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stockexchanges/add_stock/152"
+					},
+					"response": []
+				},
+				{
+					"name": "remove_stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg4MDE5NiwiZXhwIjoxNzYyOTY2NTk2fQ.WWN6TBvyQq8VRkcUDPuftaFsdjV6-0zGKdhOR6vwGNw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stockId\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stockexchanges/remove_stock/102"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stock",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgwMzE5MCwiZXhwIjoxNzYyODg5NTkwfQ.EnrPHTKErMgCED_lH8113N0c2G4sm9G3PCYkyGbbQgs"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Stock 2\",\r\n    \"description\": \"Description for Stock J\",\r\n    \"currentPrice\": 550.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stocks/create"
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2Mjg3OTgyMiwiZXhwIjoxNzYyOTY2MjIyfQ.8H3GH3CpwXttTUhWROrxvgvXztgduBGfWZDgx8Htcxk"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/stocks/list?sortOrder=asc&sortField=currentPrice",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"stocks",
+								"list"
+							],
+							"query": [
+								{
+									"key": "sortOrder",
+									"value": "asc"
+								},
+								{
+									"key": "sortField",
+									"value": "currentPrice"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgwMzE5MCwiZXhwIjoxNzYyODg5NTkwfQ.EnrPHTKErMgCED_lH8113N0c2G4sm9G3PCYkyGbbQgs"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:8080/stocks/delete/1"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgwMzE5MCwiZXhwIjoxNzYyODg5NTkwfQ.EnrPHTKErMgCED_lH8113N0c2G4sm9G3PCYkyGbbQgs"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPrice\": 150.6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/stocks/update/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"eslam\",\r\n    \"lastname\": \"gaber\",\r\n    \"email\": \"eslam@example1.com\",\r\n    \"password\": \"Asd123456789#\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eslam@example.com\",\r\n    \"password\": \"Asd123456789#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgxMDg0MiwiZXhwIjoxNzYyODk3MjQyfQ.xlr4_bzsVJGQjfER7k8W0QRvqnA8dm9hO-JIYSmEWdU"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"Asd123456789!\",\r\n    \"newPassword\": \"Asd123456789#\",\r\n    \"confirmationPassword\": \"Asd123456789#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/account/change-password"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgxMDg0MiwiZXhwIjoxNzYyODk3MjQyfQ.xlr4_bzsVJGQjfER7k8W0QRvqnA8dm9hO-JIYSmEWdU"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "localhost:8080/account/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc2xhbUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MjgxMDc3MywiZXhwIjoxNzYyODk3MTczfQ.W3pz3-Ie15tvi_DPma1SmJBwDV-DC3rkgTaSdNw6qvs"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "localhost:8080/account/refresh-token"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

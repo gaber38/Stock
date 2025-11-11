@@ -1,0 +1,30 @@
+<div class="container mt-4">
+
+  <h3>Stock Exchange Details</h3>
+
+  <div *ngIf="isLoading" class="text-center my-3">
+    <div class="spinner-border"></div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="stock && !isLoading">
+    <ul class="list-group">
+      <li class="list-group-item"><strong>ID:</strong> {{ stock.id }}</li>
+      <li class="list-group-item"><strong>Name:</strong> {{ stock.name }}</li>
+      <li class="list-group-item"><strong>Description:</strong> {{ stock.description }}</li>
+      <li class="list-group-item"><strong>Live in Market:</strong> {{ stock.liveInMarket ? 'Yes' : 'No' }}</li>
+      <li class="list-group-item">
+        <strong>Stocks:</strong>
+        <ul class="mt-2">
+          <li *ngFor="let s of stock.stocks">
+            {{ s.name }} - {{ s.currentPrice }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</div>

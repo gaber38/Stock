@@ -1,0 +1,72 @@
+<div class="container mt-5">
+  <div class="welcome-container">
+    <div class="mb-4 text-center">
+      <h1 class="welcome-text">Welcome to Stocks</h1>
+    </div>
+
+    <div class="card register-card p-4 shadow">
+      <h3 class="text-center mb-4">Register</h3>
+
+      <form (submit)="register(); $event.preventDefault()">
+        <div class="mb-3">
+          <label class="form-label">FirstName</label>
+          <input type="text" [(ngModel)]="firstname" name="firstname" class="form-control form-control-lg" required />
+          <div *ngIf="errors['firstname']" class="text-danger mt-1">
+            {{ errors['firstname'] }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">LastName</label>
+          <input type="text" [(ngModel)]="lastname" name="lastname" class="form-control form-control-lg" required />
+          <div *ngIf="errors['lastname']" class="text-danger mt-1">
+            {{ errors['lastname'] }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="text" [(ngModel)]="email" name="email" class="form-control form-control-lg" required />
+          <div *ngIf="errors['email']" class="text-danger mt-1">
+            {{ errors['email'] }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" [(ngModel)]="password" name="password" class="form-control form-control-lg" required />
+          <div *ngIf="errors['password']" class="text-danger mt-1">
+            {{ errors['password'] }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <select [(ngModel)]="role" name="role" class="form-select form-select-lg" required>
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          <div *ngIf="errors['role']" class="text-danger mt-1">
+            {{ errors['role'] }}
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="isLoading">
+            {{ isLoading ? 'Registering...' : 'Register' }}
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm ms-2"></span>
+          </button>
+          <button type="button" class="btn btn-outline-light btn-lg" (click)="goToLogin()">Back</button>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

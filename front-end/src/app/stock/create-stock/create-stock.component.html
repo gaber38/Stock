@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h3 class="mb-4 text-center">Create Stock</h3>
+
+    <form (submit)="create(); $event.preventDefault()">
+
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" name="name" required>
+        <div *ngIf="fieldErrors.name" class="text-danger mt-1">
+          {{ fieldErrors.name }}
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" [(ngModel)]="description" name="description"></textarea>
+      </div>
+
+      <!-- Current Price -->
+      <div class="mb-3">
+        <label class="form-label">Current Price</label>
+        <input type="number" class="form-control" [(ngModel)]="currentPrice" name="currentPrice" required>
+        <div *ngIf="fieldErrors.currentPrice" class="text-danger mt-1">
+          {{ fieldErrors.currentPrice }}
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          {{ isLoading ? 'Creating...' : 'Create' }}
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm ms-2"></span>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Back</button>
+      </div>
+
+      <!-- Success / Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+
+    </form>
+  </div>
+</div>

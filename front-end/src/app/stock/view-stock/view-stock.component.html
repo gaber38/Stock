@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <div class="card shadow p-4">
+    <h3 class="mb-4 text-center">Stock Details</h3>
+
+    <div *ngIf="isLoading" class="text-center my-3">
+      <div class="spinner-border"></div>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="stock && !isLoading">
+      <ul class="list-group">
+        <li class="list-group-item"><strong>ID:</strong> {{ stock.id }}</li>
+        <li class="list-group-item"><strong>Name:</strong> {{ stock.name }}</li>
+        <li class="list-group-item"><strong>Description:</strong> {{ stock.description }}</li>
+        <li class="list-group-item"><strong>Current Price:</strong> {{ stock.currentPrice }}</li>
+      </ul>
+
+      <div class="mt-3">
+        <button class="btn btn-outline-secondary" routerLink="/stocks/list">Back to List</button>
+      </div>
+    </div>
+  </div>
+</div>

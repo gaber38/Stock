@@ -1,0 +1,85 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Stocks List</h3>
+
+    <div>
+      <button class="btn btn-outline-secondary me-2" (click)="goToDashboard()">
+        <i class="bi bi-house-door"></i> Dashboard
+      </button>
+
+      <button class="btn btn-success" (click)="goToCreate()">
+        <i class="bi bi-plus-lg"></i> Create Stock
+      </button>
+
+      <button class="btn btn-outline-secondary me-2" (click)="goToLogout()">
+        <i class="bi bi-house-door"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center mb-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <div class="table-wrapper">
+    <table *ngIf="stocks.length > 0" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th (click)="changeSort('id')">ID
+            <span *ngIf="sortField === 'id'">
+              <i *ngIf="sortOrder === 'asc'" class="bi bi-caret-up-fill"></i>
+              <i *ngIf="sortOrder === 'desc'" class="bi bi-caret-down-fill"></i>
+            </span>
+          </th>
+          <th (click)="changeSort('name')">Name
+            <span *ngIf="sortField === 'name'">
+              <i *ngIf="sortOrder === 'asc'" class="bi bi-caret-up-fill"></i>
+              <i *ngIf="sortOrder === 'desc'" class="bi bi-caret-down-fill"></i>
+            </span>
+          </th>
+          <th (click)="changeSort('description')">Description
+            <span *ngIf="sortField === 'description'">
+              <i *ngIf="sortOrder === 'asc'" class="bi bi-caret-up-fill"></i>
+              <i *ngIf="sortOrder === 'desc'" class="bi bi-caret-down-fill"></i>
+            </span>
+          </th>
+          <th (click)="changeSort('currentPrice')">Current Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stock of stocks">
+          <td><a [routerLink]="['/stocks/view', stock.id]">{{ stock.id }}</a></td>
+          <td>{{ stock.name }}</td>
+          <td>{{ stock.description }}</td>
+          <td>{{ stock.currentPrice | number:'1.2-2' }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="goToUpdate(stock.id)">
+              <i class="bi bi-pencil-square"></i> Update
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteStock(stock.id)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="stocks.length === 0 && !isLoading" class="text-center mt-3">
+    No stocks available.
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between mt-3">
+    <button class="btn btn-outline-secondary" (click)="goToPage(currentPage - 1)">Previous</button>
+    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+    <button class="btn btn-outline-secondary" (click)="goToPage(currentPage + 1)">Next</button>
+  </div>
+</div>
