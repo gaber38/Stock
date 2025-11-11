@@ -5,8 +5,7 @@ A lightweight web application to manage stock exchanges and stocks. Backend is J
 
 Database Design 
 
-<img width="780" height="622" alt="image" src="https://github.com/user-attachments/assets/e5fd239e-fad6-4cc0-9d56-e6937f60a328" />
-
+<img width="781" height="622" alt="image" src="https://github.com/user-attachments/assets/bfcf2b43-f117-4a59-85ee-787cf47f5149" />
 
 Features
 
