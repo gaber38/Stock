@@ -15,7 +15,4 @@ import java.util.List;
 public interface StockExchangeRepository extends JpaRepository<StockExchange, Long> {
 
     Page<StockExchange> findAll(Pageable pageable);
-
-    @Query(value = "DELETE FROM stocks WHERE stock_exchange_id=?", nativeQuery = true)
-    void deleteRelated(@Param("id") long id);
 }
