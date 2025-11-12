@@ -120,7 +120,6 @@ public class StockExchangeService
     public void delete(long id)
     {
         StockExchange stockExchange = this.getStockExchange(id);
-//        this.stockExchangeRepository.deleteRelated(id);
         this.stockExchangeRepository.delete(stockExchange);
         logger.info("Stock Item with Id {} has been deleted", id);
     }
